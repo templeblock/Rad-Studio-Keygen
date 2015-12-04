@@ -7,7 +7,7 @@ const
   //CRC32: d06c02b0
   //MD5: 9eca158f53f8b10b7971d21cb3aeaa0a
   //SHA-1: 4ff37906e7283448aecab34c73c8dbe3d45f55a6
-  LicenseManagerHash:string='0ca4640d6c1c2f470ff3182809b881a97e76e534';
+  LicenseManagerHash:string='4ff37906e7283448aecab34c73c8dbe3d45f55a6';
   SHFolderData: array[0..13823] of byte = (
     $4D, $5A, $90, $00, $03, $00, $00, $00, $04, $00, $00, $00, $FF, $FF, $00, $00, 
     $B8, $00, $00, $00, $00, $00, $00, $00, $40, $00, $00, $00, $00, $00, $00, $00, 
