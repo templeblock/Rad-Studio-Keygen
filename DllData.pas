@@ -2,12 +2,18 @@ unit DllData;
 interface
 const
   //Rad Studio 10 settle update 1
+  
   //LicenseManager.exe
   //VER:23.0.21418.4207
-  //CRC32: d06c02b0
-  //MD5: 9eca158f53f8b10b7971d21cb3aeaa0a
-  //SHA-1: 4ff37906e7283448aecab34c73c8dbe3d45f55a6
-  LicenseManagerHash:string='4ff37906e7283448aecab34c73c8dbe3d45f55a6';
+  //CRC32: 8395454d
+  //MD5: bfc65ed7ab392f4754c7fe98664f1865
+  //SHA-1: 0ca4640d6c1c2f470ff3182809b881a97e76e534
+  LicenseManagerHash:string='0ca4640d6c1c2f470ff3182809b881a97e76e534';
+  //bds.exe
+  //CRC32: b5bd665f
+  //MD5: c3d58e87f28dbd20f78223e9713daac8
+  //SHA-1: e8cc301efc449f90750d921ab73be31d824c08c6
+  BdsHash:string='e8cc301efc449f90750d921ab73be31d824c08c6';
   SHFolderData: array[0..13823] of byte = (
     $4D, $5A, $90, $00, $03, $00, $00, $00, $04, $00, $00, $00, $FF, $FF, $00, $00, 
     $B8, $00, $00, $00, $00, $00, $00, $00, $40, $00, $00, $00, $00, $00, $00, $00, 
@@ -878,10 +884,6 @@ const
   //Rad Studio 10 settle
   //LicenseManager.exe
   //VER:23.0.20618.2753
-  //CRC32: 8395454d
-  //MD5: bfc65ed7ab392f4754c7fe98664f1865
-  //SHA-1: 0ca4640d6c1c2f470ff3182809b881a97e76e534
-  LicenseManagerHash:string='0ca4640d6c1c2f470ff3182809b881a97e76e534';
   SHFolderData: array[0..13823] of byte = (
     $4D, $5A, $90, $00, $03, $00, $00, $00, $04, $00, $00, $00, $FF, $FF, $00, $00,
     $B8, $00, $00, $00, $00, $00, $00, $00, $40, $00, $00, $00, $00, $00, $00, $00, 
