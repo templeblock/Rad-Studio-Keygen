@@ -1,7 +1,7 @@
 unit RadKeygen;
 
 interface
-uses Classes,SysUtils,Windows,Registry,SHFolder,Sha1,FGInt,DllData;
+uses Classes,SysUtils,Windows,Registry,SHFolder,Sha1,FGInt,DllData,AnsiStrings;
 
   function GenerateSerialNumber():string;
   function GetRegistrationCode():string;
@@ -89,9 +89,9 @@ begin
   SumValue:=Format('%d',[v1 + v2 + v3 + v4 + v5 + v6 + v7 + v8]);
   v9:=0;
 
-  for i := 0 to Length(SumValue)-1 do
+  for i := 0 to SumValue.Length-1 do
   begin
-    v9:=v9 xor ByteMap[Ord(SumValue[i+1])];
+    v9:=v9 xor ByteMap[Ord(SumValue.Chars[i])];
   end;
   ByteArray[0] := ((v8 shr 1) and 8) or ((v8 shr 5) and 4) or (2 * v5 and 2);
   ByteArray[1] := ((v7 shr 1) and 16) or ((v7 shr 4) and 8) or ((v6 shr 5) and 2) or ((v6 shr 8) and 1);
@@ -118,7 +118,7 @@ begin
   for i := 0 to Length(ByteArray)-1 do
   begin
     if (i=4) or (i=10) or (i=16) then  Result:=Result+'-';
-    Result:=Result+StrMap[ByteArray[i]+1];
+    Result:=Result+StrMap.Chars[ByteArray[i]];
   end;
 
 end;
@@ -147,19 +147,19 @@ function GetRegistrationCode():string;
     if (GetComputerName(@ComputerName[0],nSize)=False) then
       Key:='localhost'
     else
-      Key:=string(ComputerName);
+      Key:=String(ComputerName);
 
     Key:=UpperCase(Key);
-    for i := 0 to Length(Key)-1 do
+    for i := 0 to Key.Length-1 do
     begin
-      for j := 0 to Length(KeyMap)-1 do
+      for j := 0 to KeyMap.Length-1 do
       begin
-        if (Key[i+1]=KeyMap[j+1]) then  Break;
+        if (Key.Chars[i]=KeyMap.Chars[j]) then  Break;
       end;
-      if j>=Length(KeyMap) then
+      if j>=KeyMap.Length then
         Result:=Result+16*88
       else
-        Result:=Result+16*Ord(KeyMap[36-j]);
+        Result:=Result+16*Ord(KeyMap.Chars[35-j]);
     end;
   end;  
 var
@@ -542,7 +542,7 @@ end;
 
 function GenerateActiveFile(SerialNumber,RegistrationCode:string;var FileName:string):Boolean;
 const
-  ModStr:string='8EBD9E688D7106E57BCF63D41BADCE133FEB4CDB718F48F7BF39F6A26EB60BAE'+
+  ModStr:AnsiString='8EBD9E688D7106E57BCF63D41BADCE133FEB4CDB718F48F7BF39F6A26EB60BAE'+
                 '0E930DC984FDED2537750C9DCFBB87D7AC7F3AA4D65D9E35C2D277BCB0ECDCA0'+
                 '2D7DAE739AC8BCAE86914F6E77C17A82C77438421FC315DC38F09C7E840AF41E'+
                 '663C5562222E661ED22578A234B58481F862CEABF477C89AE70F15134F83BC7E'+
@@ -550,7 +550,7 @@ const
                 '385D3C36BD29B58E237E22C0BE66D450BDFCED524481B6DCE3F83BBEC547F926'+
                 'AD23057504DEDB9723EBFD26218167AAC79485FF608F8881D9A6AF5C57BE9A2F'+
                 'B52047ABA92F806955580517F6D147BA1FD5DB3EEF1CEE4CA250D1C0FA824CD9';
-  ExpStr:string='7E8325B1791B628766F2EB82057E4895DB234C1D7B4B09DB3B8BBE433D68F075'+
+  ExpStr:AnsiString='7E8325B1791B628766F2EB82057E4895DB234C1D7B4B09DB3B8BBE433D68F075'+
                 '36C9B38096F51088D9DC4E7058BBD7AC9A60B1B383A3BA23E026F6A53112DE80'+
                 'C191115BB9268DC509D424D8BE1FA7DBDDB7EE5CFD15C57C48A349B1008B4CCE'+
                 'DCC240D31784945260E3814612FD871242FA203F5C1006A6F47FF3A807E3B4DE'+
@@ -573,8 +573,9 @@ begin
 
   Len:= Length(Slip);
   Len:=(Swap(loWord(Len)) shl 16) or Swap(HiWord(Len));
-  Tmp:=PChar(@Len)^+(PChar(@Len)+1)^+(PChar(@Len)+2)^+(PChar(@Len)+3)^+Slip;
-  Tmp:='01'+StringOfChar('F',66)+'00'+UpperCase(SHA1Print(SHA1String(Tmp)));
+  Tmp:=PAnsiChar(@Len)^+(PAnsiChar(@Len)+1)^+(PAnsiChar(@Len)+2)^+(PAnsiChar(@Len)+3)^+Slip;
+  Tmp:='01'+AnsiString(StringOfChar('F',66))+'00'+UpperCase(SHA1Print(SHA1String(Tmp)));
+
 
   ConvertHexStringToBase256String(Tmp,Tmp);
   Base256StringToFGInt(Tmp,FGInt);
@@ -594,14 +595,14 @@ begin
   FGIntDestroy(modb);
   FGIntDestroy(res);
 
-  Slip:=StringReplace(Slip,'e.sign'#10'0'#10,'e.sign'#10'S2V5Z2VubmVkIGJ5Og=='#10,[rfReplaceAll]);
-  Slip:=StringReplace(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'WC1GT1JDRSAyMDE1IQ=='#10,[rfReplaceAll]);
-  Slip:=StringReplace(Slip,'e.sign3'#10'0'#10,'e.sign3'#10+Tmp+#10,[rfReplaceAll]);
+  Slip:=AnsiReplaceStr(Slip,'e.sign'#10'0'#10,'e.sign'#10'S2V5Z2VubmVkIGJ5Og=='#10);
+  Slip:=AnsiReplaceStr(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'WC1GT1JDRSAyMDE1IQ=='#10);
+  Slip:=AnsiReplaceStr(Slip,'e.sign3'#10'0'#10,'e.sign3'#10+Tmp+#10);
 
   v2:=$E7F931C2;
   for i := 0 to Length(Slip) - 1 do
   begin
-    Slip[i+1]:=Chr(Ord(Slip[i+1]) xor ((v2 shr 24) and $FF));
+    Slip[i+1]:=AnsiChar(Ord(Slip[i+1]) xor ((v2 shr 24) and $FF));
     v5:=Ord(Slip[i+1]);
     if (v5 and $80)=$80 then v5:=v5 or $ffffff00;
     v5:= v5 xor v2;

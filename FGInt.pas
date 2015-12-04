@@ -28,7 +28,7 @@ Unit FGInt;
 
 Interface
 
-Uses Windows, SysUtils, Controls, Math;
+Uses Windows, SysUtils, Controls, Math,AnsiStrings;
 
 Type
    TCompare = (Lt, St, Eq, Er);
@@ -38,24 +38,24 @@ Type
       Number : Array Of int64;
    End;
 
-Procedure zeronetochar8(Var g : char; Const x : String);
-Procedure zeronetochar6(Var g : integer; Const x : String);
-Procedure initialize8(Var trans : Array Of String);
-Procedure initialize6(Var trans : Array Of String);
-Procedure initialize6PGP(Var trans : Array Of String);
-Procedure ConvertBase256to64(Const str256 : String; Var str64 : String);
-Procedure ConvertBase64to256(Const str64 : String; Var str256 : String);
-Procedure ConvertBase256to2(Const str256 : String; Var str2 : String);
-Procedure ConvertBase64to2(Const str64 : String; Var str2 : String);
-Procedure ConvertBase2to256(str2 : String; Var str256 : String);
-Procedure ConvertBase2to64(str2 : String; Var str64 : String);
-Procedure ConvertBase256StringToHexString(Str256 : String; Var HexStr : String);
-Procedure ConvertHexStringToBase256String(HexStr : String; Var Str256 : String);
-Procedure PGPConvertBase256to64(Var str256, str64 : String);
-Procedure PGPConvertBase64to256(str64 : String; Var str256 : String);
-Procedure PGPConvertBase64to2(str64 : String; Var str2 : String);
-Procedure Base10StringToFGInt(Base10 : String; Var FGInt : TFGInt);
-Procedure FGIntToBase10String(Const FGInt : TFGInt; Var Base10 : String);
+Procedure zeronetochar8(Var g : AnsiChar; Const x : AnsiString);
+Procedure zeronetochar6(Var g : integer; Const x : AnsiString);
+Procedure initialize8(Var trans : Array Of AnsiString);
+Procedure initialize6(Var trans : Array Of AnsiString);
+Procedure initialize6PGP(Var trans : Array Of AnsiString);
+Procedure ConvertBase256to64(Const str256 : AnsiString; Var str64 : AnsiString);
+Procedure ConvertBase64to256(Const str64 : AnsiString; Var str256 : AnsiString);
+Procedure ConvertBase256to2(Const str256 : AnsiString; Var str2 : AnsiString);
+Procedure ConvertBase64to2(Const str64 : AnsiString; Var str2 : AnsiString);
+Procedure ConvertBase2to256(str2 : AnsiString; Var str256 : AnsiString);
+Procedure ConvertBase2to64(str2 : AnsiString; Var str64 : AnsiString);
+Procedure ConvertBase256StringToHexString(Str256 : AnsiString; Var HexStr : AnsiString);
+Procedure ConvertHexStringToBase256String(HexStr : AnsiString; Var Str256 : AnsiString);
+Procedure PGPConvertBase256to64(Var str256, str64 : AnsiString);
+Procedure PGPConvertBase64to256(str64 : AnsiString; Var str256 : AnsiString);
+Procedure PGPConvertBase64to2(str64 : AnsiString; Var str2 : AnsiString);
+Procedure Base10StringToFGInt(Base10 : AnsiString; Var FGInt : TFGInt);
+Procedure FGIntToBase10String(Const FGInt : TFGInt; Var Base10 : AnsiString);
 Procedure FGIntDestroy(Var FGInt : TFGInt);
 Function FGIntCompareAbs(Const FGInt1, FGInt2 : TFGInt) : TCompare;
 Procedure FGIntAdd(Const FGInt1, FGInt2 : TFGInt; Var Sum : TFGInt);
@@ -75,12 +75,12 @@ Procedure FGIntAddBis(Var FGInt1 : TFGInt; Const FGInt2 : TFGInt);
 Procedure FGIntSubBis(Var FGInt1 : TFGInt; Const FGInt2 : TFGInt);
 Procedure FGIntMul(Const FGInt1, FGInt2 : TFGInt; Var Prod : TFGInt);
 Procedure FGIntSquare(Const FGInt : TFGInt; Var Square : TFGInt);
-Procedure FGIntToBase2String(Const FGInt : TFGInt; Var S : String);
-Procedure Base2StringToFGInt(S : String; Var FGInt : TFGInt);
-Procedure FGIntToBase256String(Const FGInt : TFGInt; Var str256 : String);
-Procedure Base256StringToFGInt(str256 : String; Var FGInt : TFGInt);
-Procedure PGPMPIToFGInt(PGPMPI : String; Var FGInt : TFGInt);
-Procedure FGIntToPGPMPI(FGInt : TFGInt; Var PGPMPI : String);
+Procedure FGIntToBase2String(Const FGInt : TFGInt; Var S : AnsiString);
+Procedure Base2StringToFGInt(S : AnsiString; Var FGInt : TFGInt);
+Procedure FGIntToBase256String(Const FGInt : TFGInt; Var str256 : AnsiString);
+Procedure Base256StringToFGInt(str256 : AnsiString; Var FGInt : TFGInt);
+Procedure PGPMPIToFGInt(PGPMPI : AnsiString; Var FGInt : TFGInt);
+Procedure FGIntToPGPMPI(FGInt : TFGInt; Var PGPMPI : AnsiString);
 Procedure FGIntExp(Const FGInt, exp : TFGInt; Var res : TFGInt);
 Procedure FGIntFac(Const FGInt : TFGInt; Var res : TFGInt);
 Procedure FGIntShiftLeftBy31(Var FGInt : TFGInt);
@@ -175,11 +175,11 @@ Var
       9497, 9511, 9521, 9533, 9539, 9547, 9551, 9587, 9601, 9613, 9619, 9623, 9629, 9631, 9643, 9649, 9661, 9677, 9679,
       9689, 9697, 9719, 9721, 9733, 9739, 9743, 9749, 9767, 9769, 9781, 9787, 9791, 9803, 9811, 9817, 9829, 9833, 9839,
       9851, 9857, 9859, 9871, 9883, 9887, 9901, 9907, 9923, 9929, 9931, 9941, 9949, 9967, 9973);
-   chr64 : Array[1..64] Of char = ('a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F',
+   chr64 : Array[1..64] Of AnsiChar = ('a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F',
       'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p',
       'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y',
       'z', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '=');
-   PGPchr64 : Array[1..64] Of char = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+   PGPchr64 : Array[1..64] Of AnsiChar = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
       'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
       'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/');
@@ -188,7 +188,7 @@ Var
 {$H+}
 
 
-Procedure zeronetochar8(Var g : char; Const x : String);
+Procedure zeronetochar8(Var g : AnsiChar; Const x : AnsiString);
 Var
    i : Integer;
    b : byte;
@@ -199,11 +199,11 @@ Begin
       If copy(x, i, 1) = '1' Then
          b := b Or (1 Shl (8 - I));
    End;
-   g := chr(b);
+   g := AnsiChar(b);
 End;
 
 
-Procedure zeronetochar6(Var g : integer; Const x : String);
+Procedure zeronetochar6(Var g : integer; Const x : AnsiString);
 Var
    I : Integer;
 Begin
@@ -219,11 +219,11 @@ Begin
 End;
 
 
-Procedure initialize8(Var trans : Array Of String);
+Procedure initialize8(Var trans : Array Of AnsiString);
 Var
    c1, c2, c3, c4, c5, c6, c7, c8 : integer;
-   x : String;
-   g : char;
+   x : AnsiString;
+   g : AnsiChar;
 Begin
    For c1 := 0 To 1 Do
       For c2 := 0 To 1 Do
@@ -235,17 +235,17 @@ Begin
                         For c8 := 0 To 1 Do
                         Begin
                            x := '';
-                           x := inttostr(c1) + inttostr(c2) + inttostr(c3) + inttostr(c4) + inttostr(c5) + inttostr(c6) + inttostr(c7) + inttostr(c8);
+                           x := AnsiString(inttostr(c1) + inttostr(c2) + inttostr(c3) + inttostr(c4) + inttostr(c5) + inttostr(c6) + inttostr(c7) + inttostr(c8));
                            zeronetochar8(g, x);
                            trans[ord(g)] := x;
                         End;
 End;
 
 
-Procedure initialize6(Var trans : Array Of String);
+Procedure initialize6(Var trans : Array Of AnsiString);
 Var
    c1, c2, c3, c4, c5, c6 : integer;
-   x : String;
+   x : AnsiString;
    g : integer;
 Begin
    For c1 := 0 To 1 Do
@@ -256,16 +256,16 @@ Begin
                   For c6 := 0 To 1 Do
                   Begin
                      x := '';
-                     x := inttostr(c1) + inttostr(c2) + inttostr(c3) + inttostr(c4) + inttostr(c5) + inttostr(c6);
+                     x := AnsiString(inttostr(c1) + inttostr(c2) + inttostr(c3) + inttostr(c4) + inttostr(c5) + inttostr(c6));
                      zeronetochar6(g, x);
                      trans[ord(chr64[g])] := x;
                   End;
 End;
 
-Procedure initialize6PGP(Var trans : Array Of String);
+Procedure initialize6PGP(Var trans : Array Of AnsiString);
 Var
    c1, c2, c3, c4, c5, c6 : integer;
-   x : String;
+   x : AnsiString;
    g : integer;
 Begin
    For c1 := 0 To 1 Do
@@ -276,19 +276,19 @@ Begin
                   For c6 := 0 To 1 Do
                   Begin
                      x := '';
-                     x := inttostr(c1) + inttostr(c2) + inttostr(c3) + inttostr(c4) + inttostr(c5) + inttostr(c6);
+                     x := AnsiString(inttostr(c1) + inttostr(c2) + inttostr(c3) + inttostr(c4) + inttostr(c5) + inttostr(c6));
                      zeronetochar6(g, x);
                      trans[ord(PGPchr64[g])] := x;
                   End;
 End;
 
 
-// Convert base 8 strings to base 6 strings and visa versa
+// Convert base 8 AnsiStrings to base 6 AnsiStrings and visa versa
 
-Procedure ConvertBase256to64(Const str256 : String; Var str64 : String);
+Procedure ConvertBase256to64(Const str256 : AnsiString; Var str64 : AnsiString);
 Var
-   temp : String;
-   trans : Array[0..255] Of String;
+   temp : AnsiString;
+   trans : Array[0..255] Of AnsiString;
    i, len6 : longint;
    g : integer;
 Begin
@@ -307,12 +307,12 @@ Begin
 End;
 
 
-Procedure ConvertBase64to256(Const str64 : String; Var str256 : String);
+Procedure ConvertBase64to256(Const str64 : AnsiString; Var str256 : AnsiString);
 Var
-   temp : String;
-   trans : Array[0..255] Of String;
+   temp : AnsiString;
+   trans : Array[0..255] Of AnsiString;
    i, len8 : longint;
-   g : char;
+   g : AnsiChar;
 Begin
    initialize6(trans);
    temp := '';
@@ -328,11 +328,11 @@ Begin
 End;
 
 
-// Convert base 8 & 6 bit strings to base 2 strings and visa versa
+// Convert base 8 & 6 bit AnsiStrings to base 2 AnsiStrings and visa versa
 
-Procedure ConvertBase256to2(Const str256 : String; Var str2 : String);
+Procedure ConvertBase256to2(Const str256 : AnsiString; Var str2 : AnsiString);
 Var
-   trans : Array[0..255] Of String;
+   trans : Array[0..255] Of AnsiString;
    i : longint;
 Begin
    str2 := '';
@@ -341,9 +341,9 @@ Begin
 End;
 
 
-Procedure ConvertBase64to2(Const str64 : String; Var str2 : String);
+Procedure ConvertBase64to2(Const str64 : AnsiString; Var str2 : AnsiString);
 Var
-   trans : Array[0..255] Of String;
+   trans : Array[0..255] Of AnsiString;
    i : longint;
 Begin
    str2 := '';
@@ -352,10 +352,10 @@ Begin
 End;
 
 
-Procedure ConvertBase2to256(str2 : String; Var str256 : String);
+Procedure ConvertBase2to256(str2 : AnsiString; Var str256 : AnsiString);
 Var
    i, len8 : longint;
-   g : char;
+   g : AnsiChar;
 Begin
    str256 := '';
    While (length(str2) Mod 8) <> 0 Do str2 := '0' + str2;
@@ -369,7 +369,7 @@ Begin
 End;
 
 
-Procedure ConvertBase2to64(str2 : String; Var str64 : String);
+Procedure ConvertBase2to64(str2 : AnsiString; Var str64 : AnsiString);
 Var
    i, len6 : longint;
    g : integer;
@@ -386,9 +386,9 @@ Begin
 End;
 
 
-// Convert base 256 strings to base 16 (HexaDecimal) strings and visa versa
+// Convert base 256 AnsiStrings to base 16 (HexaDecimal) AnsiStrings and visa versa
 
-Procedure ConvertBase256StringToHexString(Str256 : String; Var HexStr : String);
+Procedure ConvertBase256StringToHexString(Str256 : AnsiString; Var HexStr : AnsiString);
 Var
    i : longint;
    b : byte;
@@ -397,15 +397,15 @@ Begin
    For i := 1 To length(str256) Do
    Begin
       b := ord(str256[i]);
-      If (b Shr 4) < 10 Then HexStr := HexStr + chr(48 + (b Shr 4))
-      Else HexStr := HexStr + chr(55 + (b Shr 4));
-      If (b And 15) < 10 Then HexStr := HexStr + chr(48 + (b And 15))
-      Else HexStr := HexStr + chr(55 + (b And 15));
+      If (b Shr 4) < 10 Then HexStr := HexStr + AnsiChar(48 + (b Shr 4))
+      Else HexStr := HexStr + AnsiChar(55 + (b Shr 4));
+      If (b And 15) < 10 Then HexStr := HexStr + AnsiChar(48 + (b And 15))
+      Else HexStr := HexStr + AnsiChar(55 + (b And 15));
    End;
 End;
 
 
-Procedure ConvertHexStringToBase256String(HexStr : String; Var Str256 : String);
+Procedure ConvertHexStringToBase256String(HexStr : AnsiString; Var Str256 : AnsiString);
 Var
    i : longint;
    b, h1, h2 : byte;
@@ -417,19 +417,19 @@ Begin
       h1 := ord(HexStr[2 * i - 1]);
       If h1 < 58 Then b := ((h1 - 48) Shl 4) Else b := ((h1 - 55) Shl 4);
       If h2 < 58 Then b := (b Or (h2 - 48)) Else b := (b Or (h2 - 55));
-      Str256 := Str256 + chr(b);
+      Str256 := Str256 + AnsiChar(b);
    End;
 End;
 
 
-// Convert base 256 strings to base 64 strings and visa versa, PGP style
+// Convert base 256 AnsiStrings to base 64 AnsiStrings and visa versa, PGP style
 
-Procedure PGPConvertBase256to64(Var str256, str64 : String);
+Procedure PGPConvertBase256to64(Var str256, str64 : AnsiString);
 Var
-   temp, x, a : String;
+   temp, x, a : AnsiString;
    i, len6 : longint;
    g : integer;
-   trans : Array[0..255] Of String;
+   trans : Array[0..255] Of AnsiString;
 Begin
    initialize8(trans);
    temp := '';
@@ -458,12 +458,12 @@ Begin
 End;
 
 
-Procedure PGPConvertBase64to256(str64 : String; Var str256 : String);
+Procedure PGPConvertBase64to256(str64 : AnsiString; Var str256 : AnsiString);
 Var
-   temp, x : String;
+   temp, x : AnsiString;
    i, j, len8 : longint;
-   g : char;
-   trans : Array[0..255] Of String;
+   g : AnsiChar;
+   trans : Array[0..255] Of AnsiString;
 Begin
    initialize6PGP(trans);
    temp := '';
@@ -482,13 +482,13 @@ Begin
    End;
 End;
 
-// Convert base 64 strings to base 2 strings, PGP style
+// Convert base 64 AnsiStrings to base 2 AnsiStrings, PGP style
 
 
-Procedure PGPConvertBase64to2(str64 : String; Var str2 : String);
+Procedure PGPConvertBase64to2(str64 : AnsiString; Var str2 : AnsiString);
 Var
    i, j : longint;
-   trans : Array[0..255] Of String;
+   trans : Array[0..255] Of AnsiString;
 Begin
    str2 := '';
    initialize6(trans);
@@ -499,13 +499,13 @@ Begin
 End;
 
 
-// Convert a base 10 string to a FGInt
+// Convert a base 10 AnsiString to a FGInt
 
-Procedure Base10StringToFGInt(Base10 : String; Var FGInt : TFGInt);
+Procedure Base10StringToFGInt(Base10 : AnsiString; Var FGInt : TFGInt);
 Var
    i, size : longint;
    j : int64;
-   S : String;
+   S : AnsiString;
    sign : TSign;
 
    Procedure GIntDivByIntBis1(Var GInt : TFGInt; by : int64; Var modres : int64);
@@ -546,16 +546,17 @@ Begin
    FGInt.Number[0] := size;
    For i := 1 To size - 1 Do
    Begin
-      FGInt.Number[i] := StrToInt(copy(Base10, length(Base10) - 8, 9));
+      FGInt.Number[i] := StrToInt(String(RightStr(Base10,9)));
+      //FGInt.Number[i] := StrToInt((copy(String(Base10), length(String(Base10)) - 8, 9)));
       delete(Base10, length(Base10) - 8, 9);
    End;
-   FGInt.Number[size] := StrToInt(Base10);
+   FGInt.Number[size] := StrToInt(String(Base10));
 
    S := '';
    While (FGInt.Number[0] <> 1) Or (FGInt.Number[1] <> 0) Do
    Begin
       GIntDivByIntBis1(FGInt, 2, j);
-      S := inttostr(j) + S;
+      S := AnsiString(inttostr(j)) + S;
    End;
    S := '0' + S;
    FGIntDestroy(FGInt);
@@ -564,11 +565,11 @@ Begin
 End;
 
 
-// Convert a FGInt to a base 10 string
+// Convert a FGInt to a base 10 AnsiString
 
-Procedure FGIntToBase10String(Const FGInt : TFGInt; Var Base10 : String);
+Procedure FGIntToBase10String(Const FGInt : TFGInt; Var Base10 : AnsiString);
 Var
-   S : String;
+   S : AnsiString;
    j : int64;
    temp : TFGInt;
 Begin
@@ -577,7 +578,7 @@ Begin
    While (temp.Number[0] > 1) Or (temp.Number[1] > 0) Do
    Begin
       FGIntDivByIntBis(temp, 1000000000, j);
-      S := IntToStr(j);
+      S := AnsiString(IntToStr(j));
       While Length(S) < 9 Do S := '0' + S;
       Base10 := S + Base10;
    End;
@@ -1006,7 +1007,7 @@ Begin
 End;
 
 
-// Square a FGInt, FGInt² = Square
+// Square a FGInt, FGInt?= Square
 
 Procedure FGIntSquare(Const FGInt : TFGInt; Var Square : TFGInt);
 Var
@@ -1041,9 +1042,9 @@ Begin
 End;
 
 
-// Convert a FGInt to a binary string (base 2) & visa versa
+// Convert a FGInt to a binary AnsiString (base 2) & visa versa
 
-Procedure FGIntToBase2String(Const FGInt : TFGInt; Var S : String);
+Procedure FGIntToBase2String(Const FGInt : TFGInt; Var S : AnsiString);
 Var
    i : longint;
    j : integer;
@@ -1051,14 +1052,14 @@ Begin
    S := '';
    For i := 1 To FGInt.Number[0] Do
    Begin
-      For j := 0 To 30 Do S := inttostr(1 And (FGInt.Number[i] Shr j)) + S;
+      For j := 0 To 30 Do S := AnsiString(inttostr(1 And (FGInt.Number[i] Shr j))) + S;
    End;
    While (length(S) > 1) And (S[1] = '0') Do delete(S, 1, 1);
    If S = '' Then S := '0';
 End;
 
 
-Procedure Base2StringToFGInt(S : String; Var FGInt : TFGInt);
+Procedure Base2StringToFGInt(S : AnsiString; Var FGInt : TFGInt);
 Var
    i, j, size : longint;
 Begin
@@ -1086,13 +1087,13 @@ Begin
 End;
 
 
-// Convert a FGInt to an base 256 string & visa versa
+// Convert a FGInt to an base 256 AnsiString & visa versa
 
-Procedure FGIntToBase256String(Const FGInt : TFGInt; Var str256 : String);
+Procedure FGIntToBase256String(Const FGInt : TFGInt; Var str256 : AnsiString);
 Var
-   temp1 : String;
+   temp1 : AnsiString;
    i, len8 : longint;
-   g : char;
+   g : AnsiChar;
 Begin
    FGIntToBase2String(FGInt, temp1);
    While (length(temp1) Mod 8) <> 0 Do temp1 := '0' + temp1;
@@ -1107,11 +1108,11 @@ Begin
 End;
 
 
-Procedure Base256StringToFGInt(str256 : String; Var FGInt : TFGInt);
+Procedure Base256StringToFGInt(str256 : AnsiString; Var FGInt : TFGInt);
 Var
-   temp1 : String;
+   temp1 : AnsiString;
    i : longint;
-   trans : Array[0..255] Of String;
+   trans : Array[0..255] Of AnsiString;
 Begin
    temp1 := '';
    initialize8(trans);
@@ -1123,9 +1124,9 @@ End;
 // Convert an MPI (Multiple Precision Integer, PGP style) to an FGInt &
 // visa versa
 
-Procedure PGPMPIToFGInt(PGPMPI : String; Var FGInt : TFGInt);
+Procedure PGPMPIToFGInt(PGPMPI : AnsiString; Var FGInt : TFGInt);
 Var
-   temp : String;
+   temp : AnsiString;
 Begin
    temp := PGPMPI;
    delete(temp, 1, 2);
@@ -1133,10 +1134,10 @@ Begin
 End;
 
 
-Procedure FGIntToPGPMPI(FGInt : TFGInt; Var PGPMPI : String);
+Procedure FGIntToPGPMPI(FGInt : TFGInt; Var PGPMPI : AnsiString);
 Var
    len, i : word;
-   c : char;
+   c : AnsiChar;
    b : byte;
 Begin
    FGIntToBase256String(FGInt, PGPMPI);
@@ -1144,9 +1145,9 @@ Begin
    c := PGPMPI[1];
    For i := 7 Downto 0 Do If (ord(c) Shr i) = 0 Then len := len - 1 Else break;
    b := len Mod 256;
-   PGPMPI := chr(b) + PGPMPI;
+   PGPMPI := AnsiChar(b) + PGPMPI;
    b := len Div 256;
-   PGPMPI := chr(b) + PGPMPI;
+   PGPMPI := AnsiChar(b) + PGPMPI;
 End;
 
 
@@ -1155,7 +1156,7 @@ End;
 Procedure FGIntExp(Const FGInt, exp : TFGInt; Var res : TFGInt);
 Var
    temp2, temp3 : TFGInt;
-   S : String;
+   S : AnsiString;
    i : longint;
 Begin
    FGIntToBase2String(exp, S);
@@ -1507,7 +1508,7 @@ Procedure FGIntModExp(Var FGInt, exp, modb, res : TFGInt);
 Var
    temp2, temp3 : TFGInt;
    i : longint;
-   S : String;
+   S : AnsiString;
 Begin
    If (Modb.Number[1] Mod 2) = 1 Then
    Begin
@@ -1614,7 +1615,7 @@ Procedure FGIntMontgomeryModExp(Var FGInt, exp, modb, res : TFGInt);
 Var
    temp2, temp3, baseInv, r : TFGInt;
    i, j, t, b : longint;
-   S : String;
+   S : AnsiString;
    head : int64;
 Begin
    FGIntToBase2String(exp, S);
@@ -1789,7 +1790,7 @@ Begin
    While (i < nrtest) And ok Do
    Begin
       i := i + 1;
-      Base10StringToFGInt(inttostr(Primes[Random(1227) + 1]), temp2);
+      Base10StringToFGInt(AnsiString(inttostr(Primes[Random(1227) + 1])), temp2);
       FGIntMontGomeryModExp(temp2, m, FGIntp, z);
       FGIntDestroy(temp2);
       ok1 := (FGIntCompareAbs(z, one) = Eq);

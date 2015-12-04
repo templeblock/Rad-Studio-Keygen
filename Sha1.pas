@@ -12,7 +12,7 @@ unit SHA1;
 	
 interface
 uses
-		Windows,SysUtils;
+		Windows,SysUtils,AnsiStrings;
 	
 type
 		TSHA1Digest = array[0..19] of byte;
@@ -28,9 +28,9 @@ procedure SHA1Update(var Context: TSHA1Context; Buffer: pointer; Len: integer);
 procedure SHA1Final(var Context: TSHA1Context; var Digest: TSHA1Digest);
 
 
-function SHA1String(M: string): TSHA1Digest;
+function SHA1String(M: AnsiString): TSHA1Digest;
 function SHA1File(N: string): TSHA1Digest;
-function SHA1Print(Digest: TSHA1Digest): string;
+function SHA1Print(Digest: TSHA1Digest): AnsiString;
 	
 //******************************************************************************
 implementation
@@ -200,12 +200,12 @@ begin
 end;
 
 
-function SHA1String(M: string): TSHA1Digest;
+function SHA1String(M: AnsiString): TSHA1Digest;
 var
   Context: TSHA1Context;
 begin
   SHA1Init(Context);
-  SHA1Update(Context, pChar(M), length(M));
+  SHA1Update(Context, PAnsiChar(M), length(M));
   SHA1Final(Context, Result);
 end;
 
@@ -237,11 +237,11 @@ begin
   SHA1Final(Context, Result);
 end;
 
-function SHA1Print(Digest: TSHA1Digest): string;
+function SHA1Print(Digest: TSHA1Digest): AnsiString;
 var
   I: byte;
 const
-  Digits: array[0..15] of char =
+  Digits: array[0..15] of AnsiChar =
   ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
 begin
   Result := '';
