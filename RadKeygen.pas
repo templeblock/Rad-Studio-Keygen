@@ -625,9 +625,12 @@ begin
   finally
     Reg.Free;
   end;
-  if DirectoryExists(RootDir+'\Bin') and FileExists(RootDir+'\Bin\LicenseManager.exe') then
+  if DirectoryExists(RootDir+'\Bin') and 
+      FileExists(RootDir+'\Bin\LicenseManager.exe') and 
+      FileExists(RootDir+'\Bin\bds.exe') then
   begin
-    if (SHA1Print(SHA1File(RootDir+'\Bin\LicenseManager.exe'))=LicenseManagerHash) and (SHA1Print(SHA1File(RootDir+'\Bin\bds.exe'))=BdsHash) then
+    if (SHA1Print(SHA1File(RootDir+'\Bin\LicenseManager.exe'))=LicenseManagerHash) and 
+        (SHA1Print(SHA1File(RootDir+'\Bin\bds.exe'))=BdsHash) then
     begin
       FileName:= RootDir+'\Bin\SHFolder.dll';
       Stream:=TMemoryStream.Create;
