@@ -1,5 +1,8 @@
 unit DllData;
 interface
+{
+  SHFolderData is SHFolder.dll from unis keymaker
+}
 const
   //Rad Studio 10 settle update 1
   
