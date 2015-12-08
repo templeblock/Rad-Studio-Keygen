@@ -13,7 +13,17 @@ implementation
 const
   HostPID:Integer=8217;
   HostSKU:Integer=53;
-  ByteMap:array[0..255] of Byte=($00, $07, $0E, $09, $1C, $1B, $12, $15, $38, $3F,
+
+{
+//from xforce keygen
+function GenerateSerialNumber():string;
+var
+  i:Integer;
+  v19,v20,v21,v22,v23,v24,v25,eax:Integer;
+  TmpStr:string;
+  TmpByte:array[0..19] of Byte;
+const
+  TmpChar:array[0..255] of Byte=($00, $07, $0E, $09, $1C, $1B, $12, $15, $38, $3F,
                                 $36, $31, $24, $23, $2A, $2D, $70, $77, $7E, $79,
                                 $6C, $6B, $62, $65, $48, $4F, $46, $41, $54, $53,
                                 $5A, $5D, $E0, $E7, $EE, $E9, $FC, $FB, $F2, $F5,
@@ -39,11 +49,127 @@ const
                                 $BC, $BB, $96, $91, $98, $9F, $8A, $8D, $84, $83,
                                 $DE, $D9, $D0, $D7, $C2, $C5, $CC, $CB, $E6, $E1,
                                 $E8, $EF, $FA, $FD, $F4, $F3);
+  ConstStr:string='ABC2DE34FGHJKLM5NPQRST6U7VWX8YZ9';
+begin
+  repeat
+    for i := 0 to 19 do
+    begin
+      TmpByte[i]:=Random(32);
+    end;
+    v19 := 0;
+    v20 := 0;
+    v21 := 0;
+    v22 := 0;
+    v23 := 1;
+    v24 := 8217;
+    v25 := 53;
+    
+    TmpByte[6]:=(TmpByte[6] and $FD) or (2*v19);
+    TmpByte[16]:=(TmpByte[16] and $EF) or (v20 shl 4);
+    TmpByte[2]:=(TmpByte[2] and $FE) or v21;
+    TmpByte[5]:=(TmpByte[5] and $F7) or (8*v22);
+    TmpByte[0]:=(TmpByte[0] and $FD) or (2*(v23 and 1));
 
+    TmpByte[16]:=(TmpByte[16] and $FE) or ((v23 shr 1) and 1);
+    TmpByte[3]:=(TmpByte[3] and $EF) or (((v23 shr 2) and 1) shl 4);
+    TmpByte[2]:=(TmpByte[2] and $FB) or 4*((v23 shr 3) and 1);
 
+    TmpByte[7]:=(TmpByte[7] and $FD) or 2*((v23 shr 4) and 1);
+    TmpByte[7]:=(TmpByte[7] and $FB) or 4*(v24 and 1);
+
+    TmpByte[8]:=(TmpByte[8] and $FE) or ((v24 shr 1) and 1);
+    TmpByte[9]:=(TmpByte[9] and $EF) or (((v24 shr 2) and 1) shl 4);
+    TmpByte[15]:=(TmpByte[15] and $F7) or 8*((v24 shr 3) and 1);
+    TmpByte[15]:=(TmpByte[15] and $FB) or 4*((v24 shr 4) and 1);
+    TmpByte[2]:=(TmpByte[2] and $FD) or 2*((v24 shr 5) and 1);
+    TmpByte[1]:=(TmpByte[1] and $FD) or 2*((v24 shr 6) and 1);
+    TmpByte[4]:=(TmpByte[4] and $F7) or 8*((v24 shr 7) and 1);
+    TmpByte[1]:=(TmpByte[1] and $FE) or ((v24 shr 8) and 1);
+    TmpByte[18]:=(TmpByte[18] and $F7) or 8*((v24 shr 9) and 1);
+    TmpByte[18]:=(TmpByte[18] and $FB) or 4*((v24 shr 10) and 1);
+    TmpByte[13]:=(TmpByte[13] and $EF) or (((v24 shr 11) and 1) shl 4);
+    TmpByte[19]:=(TmpByte[19] and $FD) or 2*((v24 shr 12) and 1);
+    TmpByte[19]:=(TmpByte[19] and $EF) or (((v24 shr 13) and 1) shl 4);
+
+    TmpByte[14]:=(TmpByte[14] and $FD) or 2*(v25 and 1);
+    TmpByte[14]:=(TmpByte[14] and $FE) or ((v25 shr 1) and 1);
+    TmpByte[16]:=(TmpByte[16] and $F7) or 8*((v25 shr 2) and 1);
+    TmpByte[2]:=(TmpByte[2] and $EF) or (((v25 shr 3) and 1) shl 4);
+    TmpByte[18]:=(TmpByte[18] and $EF) or (((v25 shr 4) and 1) shl 4);
+    TmpByte[1]:=(TmpByte[1] and $EF) or (((v25 shr 5) and 1) shl 4);
+    TmpByte[19]:=(TmpByte[19] and $F7) or 8*((v25 shr 6) and 1);
+    TmpByte[1]:=(TmpByte[1] and $F7) or  8*((v25 shr 7) and 1);
+
+    EAX :=2*(TmpByte[18] and 2);
+    EAX:=2*(EAX or (TmpByte[5] and 2));
+    EAX:=4 * (EAX or (TmpByte[7] and 16));
+    EAX:=(EAX or (TmpByte[10] and 8));
+    EAX:=2*(EAX or (TmpByte[15] and 1));
+    EAX:=2*(EAX or (TmpByte[12] and 1));
+    EAX:=(EAX or (TmpByte[7] and 8));
+    EAX:=4 * (EAX or (TmpByte[8] and 16));
+    EAX:=(EAX or (TmpByte[0] and 4));
+    EAX:=2*(EAX or (TmpByte[11] and 1));
+    EAX:=8*(EAX or (TmpByte[6] and 4));
+    EAX:=(EAX or (TmpByte[0] and 8));
+    EAX:=2*(EAX or (TmpByte[5] and 4));
+    EAX:=(EAX or ((TmpByte[2] shr 3) and 1));
+    EAX:=(EAX or (TmpByte[9] and 4));
+    EAX:=(EAX or (TmpByte[11] and 2));
+  until (EAX<>0);
+  TmpStr:=IntToStr(v23+v24+v25+EAX);
+  v20:=0;
+  for i := 0 to Length(TmpStr)-1 do
+  begin
+    v19:=Ord(TmpStr[i+1]);
+    v19:=TmpChar[v19];
+    v20:=v20 xor v19;
+  end;
+  TmpByte[11]:= (TmpByte[11] and $3F) or 2*(v20 and 3);
+  TmpByte[4]:= (TmpByte[4] and $EF) or (((v20 shr 2) and 1) shl 4);
+  TmpByte[9]:= (TmpByte[9] and $F7) or 8*((v20 shr 3) and 1);
+  TmpByte[17]:= (TmpByte[17] and $FD) or 2*((v20 shr 4) and 1);
+  TmpByte[18]:= (TmpByte[18] and $FE) or ((v20 shr 5) and 1);
+  TmpByte[6]:= (TmpByte[6] and $F7) or 8*((v20 shr 6) and 1);
+  TmpByte[13]:= (TmpByte[13] and $FE) or (v20 shr 7);
+  Result:='';
+  for i := 0 to 19 do
+  begin
+    Result:=Result+ConstStr[TmpByte[i]+1];
+    if (i=3) or (i=9) or (i=15) then Result:=Result+'-';
+  end;
+end;
+}
+//from unis keymaker
 function GenerateSerialNumber():string;
 const
   StrMap:string='ABC2DE34FGHJKLM5NPQRST6U7VWX8YZ9';
+  ByteMap:array[0..255] of Byte=($00, $07, $0E, $09, $1C, $1B, $12, $15, $38, $3F,
+                                $36, $31, $24, $23, $2A, $2D, $70, $77, $7E, $79,
+                                $6C, $6B, $62, $65, $48, $4F, $46, $41, $54, $53,
+                                $5A, $5D, $E0, $E7, $EE, $E9, $FC, $FB, $F2, $F5,
+                                $D8, $DF, $D6, $D1, $C4, $C3, $CA, $CD, $90, $97,
+                                $9E, $99, $8C, $8B, $82, $85, $A8, $AF, $A6, $A1,
+                                $B4, $B3, $BA, $BD, $C7, $C0, $C9, $CE, $DB, $DC,
+                                $D5, $D2, $FF, $F8, $F1, $F6, $E3, $E4, $ED, $EA,
+                                $B7, $B0, $B9, $BE, $AB, $AC, $A5, $A2, $8F, $88,
+                                $81, $86, $93, $94, $9D, $9A, $27, $20, $29, $2E,
+                                $3B, $3C, $35, $32, $1F, $18, $11, $16, $03, $04,
+                                $0D, $0A, $57, $50, $59, $5E, $4B, $4C, $45, $42,
+                                $6F, $68, $61, $66, $73, $74, $7D, $7A, $89, $8E,
+                                $87, $80, $95, $92, $9B, $9C, $B1, $B6, $BF, $B8,
+                                $AD, $AA, $A3, $A4, $F9, $FE, $F7, $F0, $E5, $E2,
+                                $EB, $EC, $C1, $C6, $CF, $C8, $DD, $DA, $D3, $D4,
+                                $69, $6E, $67, $60, $75, $72, $7B, $7C, $51, $56,
+                                $5F, $58, $4D, $4A, $43, $44, $19, $1E, $17, $10,
+                                $05, $02, $0B, $0C, $21, $26, $2F, $28, $3D, $3A,
+                                $33, $34, $4E, $49, $40, $47, $52, $55, $5C, $5B,
+                                $76, $71, $78, $7F, $6A, $6D, $64, $63, $3E, $39,
+                                $30, $37, $22, $25, $2C, $2B, $06, $01, $08, $0F,
+                                $1A, $1D, $14, $13, $AE, $A9, $A0, $A7, $B2, $B5,
+                                $BC, $BB, $96, $91, $98, $9F, $8A, $8D, $84, $83,
+                                $DE, $D9, $D0, $D7, $C2, $C5, $CC, $CB, $E6, $E1,
+                                $E8, $EF, $FA, $FD, $F4, $F3);  
 var
   i,v1,v2,v3,v4,v5,v6,v7,v8,v9:Integer;
   SumValue:string;
