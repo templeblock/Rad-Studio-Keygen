@@ -3,7 +3,7 @@ object FrmMain: TFrmMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'RADStudio 10 Seattle Update 1 Keygen'
+  Caption = 'RADStudio 10.1 Berlin Keygen'
   ClientHeight = 134
   ClientWidth = 393
   Color = clBtnFace

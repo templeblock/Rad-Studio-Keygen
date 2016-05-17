@@ -1,7 +1,7 @@
 unit RadKeygen;
 
 interface
-uses Classes,SysUtils,Windows,Registry,SHFolder,Sha1,FGInt,DllData,AnsiStrings;
+uses Classes,SysUtils,Windows,Registry,SHFolder,Sha1,FGInt,DllData;
 
   function GenerateSerialNumber():string;
   function GetRegistrationCode():string;
@@ -11,139 +11,8 @@ uses Classes,SysUtils,Windows,Registry,SHFolder,Sha1,FGInt,DllData,AnsiStrings;
 implementation
 
 const
-  HostPID:Integer=8217;
+  HostPID:Integer=8218;
   HostSKU:Integer=53;
-
-{
-//from xforce keygen
-function GenerateSerialNumber():string;
-var
-  i:Integer;
-  v19,v20,v21,v22,v23,v24,v25,eax:Integer;
-  TmpStr:string;
-  TmpByte:array[0..19] of Byte;
-const
-  TmpChar:array[0..255] of Byte=($00, $07, $0E, $09, $1C, $1B, $12, $15, $38, $3F,
-                                $36, $31, $24, $23, $2A, $2D, $70, $77, $7E, $79,
-                                $6C, $6B, $62, $65, $48, $4F, $46, $41, $54, $53,
-                                $5A, $5D, $E0, $E7, $EE, $E9, $FC, $FB, $F2, $F5,
-                                $D8, $DF, $D6, $D1, $C4, $C3, $CA, $CD, $90, $97,
-                                $9E, $99, $8C, $8B, $82, $85, $A8, $AF, $A6, $A1,
-                                $B4, $B3, $BA, $BD, $C7, $C0, $C9, $CE, $DB, $DC,
-                                $D5, $D2, $FF, $F8, $F1, $F6, $E3, $E4, $ED, $EA,
-                                $B7, $B0, $B9, $BE, $AB, $AC, $A5, $A2, $8F, $88,
-                                $81, $86, $93, $94, $9D, $9A, $27, $20, $29, $2E,
-                                $3B, $3C, $35, $32, $1F, $18, $11, $16, $03, $04,
-                                $0D, $0A, $57, $50, $59, $5E, $4B, $4C, $45, $42,
-                                $6F, $68, $61, $66, $73, $74, $7D, $7A, $89, $8E,
-                                $87, $80, $95, $92, $9B, $9C, $B1, $B6, $BF, $B8,
-                                $AD, $AA, $A3, $A4, $F9, $FE, $F7, $F0, $E5, $E2,
-                                $EB, $EC, $C1, $C6, $CF, $C8, $DD, $DA, $D3, $D4,
-                                $69, $6E, $67, $60, $75, $72, $7B, $7C, $51, $56,
-                                $5F, $58, $4D, $4A, $43, $44, $19, $1E, $17, $10,
-                                $05, $02, $0B, $0C, $21, $26, $2F, $28, $3D, $3A,
-                                $33, $34, $4E, $49, $40, $47, $52, $55, $5C, $5B,
-                                $76, $71, $78, $7F, $6A, $6D, $64, $63, $3E, $39,
-                                $30, $37, $22, $25, $2C, $2B, $06, $01, $08, $0F,
-                                $1A, $1D, $14, $13, $AE, $A9, $A0, $A7, $B2, $B5,
-                                $BC, $BB, $96, $91, $98, $9F, $8A, $8D, $84, $83,
-                                $DE, $D9, $D0, $D7, $C2, $C5, $CC, $CB, $E6, $E1,
-                                $E8, $EF, $FA, $FD, $F4, $F3);
-  ConstStr:string='ABC2DE34FGHJKLM5NPQRST6U7VWX8YZ9';
-begin
-  repeat
-    for i := 0 to 19 do
-    begin
-      TmpByte[i]:=Random(32);
-    end;
-    v19 := 0;
-    v20 := 0;
-    v21 := 0;
-    v22 := 0;
-    v23 := 1;
-    v24 := 8217;
-    v25 := 53;
-    
-    TmpByte[6]:=(TmpByte[6] and $FD) or (2*v19);
-    TmpByte[16]:=(TmpByte[16] and $EF) or (v20 shl 4);
-    TmpByte[2]:=(TmpByte[2] and $FE) or v21;
-    TmpByte[5]:=(TmpByte[5] and $F7) or (8*v22);
-    TmpByte[0]:=(TmpByte[0] and $FD) or (2*(v23 and 1));
-
-    TmpByte[16]:=(TmpByte[16] and $FE) or ((v23 shr 1) and 1);
-    TmpByte[3]:=(TmpByte[3] and $EF) or (((v23 shr 2) and 1) shl 4);
-    TmpByte[2]:=(TmpByte[2] and $FB) or 4*((v23 shr 3) and 1);
-
-    TmpByte[7]:=(TmpByte[7] and $FD) or 2*((v23 shr 4) and 1);
-    TmpByte[7]:=(TmpByte[7] and $FB) or 4*(v24 and 1);
-
-    TmpByte[8]:=(TmpByte[8] and $FE) or ((v24 shr 1) and 1);
-    TmpByte[9]:=(TmpByte[9] and $EF) or (((v24 shr 2) and 1) shl 4);
-    TmpByte[15]:=(TmpByte[15] and $F7) or 8*((v24 shr 3) and 1);
-    TmpByte[15]:=(TmpByte[15] and $FB) or 4*((v24 shr 4) and 1);
-    TmpByte[2]:=(TmpByte[2] and $FD) or 2*((v24 shr 5) and 1);
-    TmpByte[1]:=(TmpByte[1] and $FD) or 2*((v24 shr 6) and 1);
-    TmpByte[4]:=(TmpByte[4] and $F7) or 8*((v24 shr 7) and 1);
-    TmpByte[1]:=(TmpByte[1] and $FE) or ((v24 shr 8) and 1);
-    TmpByte[18]:=(TmpByte[18] and $F7) or 8*((v24 shr 9) and 1);
-    TmpByte[18]:=(TmpByte[18] and $FB) or 4*((v24 shr 10) and 1);
-    TmpByte[13]:=(TmpByte[13] and $EF) or (((v24 shr 11) and 1) shl 4);
-    TmpByte[19]:=(TmpByte[19] and $FD) or 2*((v24 shr 12) and 1);
-    TmpByte[19]:=(TmpByte[19] and $EF) or (((v24 shr 13) and 1) shl 4);
-
-    TmpByte[14]:=(TmpByte[14] and $FD) or 2*(v25 and 1);
-    TmpByte[14]:=(TmpByte[14] and $FE) or ((v25 shr 1) and 1);
-    TmpByte[16]:=(TmpByte[16] and $F7) or 8*((v25 shr 2) and 1);
-    TmpByte[2]:=(TmpByte[2] and $EF) or (((v25 shr 3) and 1) shl 4);
-    TmpByte[18]:=(TmpByte[18] and $EF) or (((v25 shr 4) and 1) shl 4);
-    TmpByte[1]:=(TmpByte[1] and $EF) or (((v25 shr 5) and 1) shl 4);
-    TmpByte[19]:=(TmpByte[19] and $F7) or 8*((v25 shr 6) and 1);
-    TmpByte[1]:=(TmpByte[1] and $F7) or  8*((v25 shr 7) and 1);
-
-    EAX :=2*(TmpByte[18] and 2);
-    EAX:=2*(EAX or (TmpByte[5] and 2));
-    EAX:=4 * (EAX or (TmpByte[7] and 16));
-    EAX:=(EAX or (TmpByte[10] and 8));
-    EAX:=2*(EAX or (TmpByte[15] and 1));
-    EAX:=2*(EAX or (TmpByte[12] and 1));
-    EAX:=(EAX or (TmpByte[7] and 8));
-    EAX:=4 * (EAX or (TmpByte[8] and 16));
-    EAX:=(EAX or (TmpByte[0] and 4));
-    EAX:=2*(EAX or (TmpByte[11] and 1));
-    EAX:=8*(EAX or (TmpByte[6] and 4));
-    EAX:=(EAX or (TmpByte[0] and 8));
-    EAX:=2*(EAX or (TmpByte[5] and 4));
-    EAX:=(EAX or ((TmpByte[2] shr 3) and 1));
-    EAX:=(EAX or (TmpByte[9] and 4));
-    EAX:=(EAX or (TmpByte[11] and 2));
-  until (EAX<>0);
-  TmpStr:=IntToStr(v23+v24+v25+EAX);
-  v20:=0;
-  for i := 0 to Length(TmpStr)-1 do
-  begin
-    v19:=Ord(TmpStr[i+1]);
-    v19:=TmpChar[v19];
-    v20:=v20 xor v19;
-  end;
-  TmpByte[11]:= (TmpByte[11] and $3F) or 2*(v20 and 3);
-  TmpByte[4]:= (TmpByte[4] and $EF) or (((v20 shr 2) and 1) shl 4);
-  TmpByte[9]:= (TmpByte[9] and $F7) or 8*((v20 shr 3) and 1);
-  TmpByte[17]:= (TmpByte[17] and $FD) or 2*((v20 shr 4) and 1);
-  TmpByte[18]:= (TmpByte[18] and $FE) or ((v20 shr 5) and 1);
-  TmpByte[6]:= (TmpByte[6] and $F7) or 8*((v20 shr 6) and 1);
-  TmpByte[13]:= (TmpByte[13] and $FE) or (v20 shr 7);
-  Result:='';
-  for i := 0 to 19 do
-  begin
-    Result:=Result+ConstStr[TmpByte[i]+1];
-    if (i=3) or (i=9) or (i=15) then Result:=Result+'-';
-  end;
-end;
-}
-//from unis keymaker
-function GenerateSerialNumber():string;
-const
-  StrMap:string='ABC2DE34FGHJKLM5NPQRST6U7VWX8YZ9';
   ByteMap:array[0..255] of Byte=($00, $07, $0E, $09, $1C, $1B, $12, $15, $38, $3F,
                                 $36, $31, $24, $23, $2A, $2D, $70, $77, $7E, $79,
                                 $6C, $6B, $62, $65, $48, $4F, $46, $41, $54, $53,
@@ -169,7 +38,38 @@ const
                                 $1A, $1D, $14, $13, $AE, $A9, $A0, $A7, $B2, $B5,
                                 $BC, $BB, $96, $91, $98, $9F, $8A, $8D, $84, $83,
                                 $DE, $D9, $D0, $D7, $C2, $C5, $CC, $CB, $E6, $E1,
-                                $E8, $EF, $FA, $FD, $F4, $F3);  
+                                $E8, $EF, $FA, $FD, $F4, $F3);
+  CheckMap:array[0..255] of Word=($0020, $0020, $0020, $0020, $0020, $0020, $0020, $0020, $0020, $0068,
+                                $0028, $0028, $0028, $0028, $0020, $0020, $0020, $0020, $0020, $0020,
+                                $0020, $0020, $0020, $0020, $0020, $0020, $0020, $0020, $0020, $0020,
+                                $0020, $0020, $0048, $0010, $0010, $0010, $0010, $0010, $0010, $0010,
+                                $0010, $0010, $0010, $0010, $0010, $0010, $0010, $0010, $0084, $0084,
+                                $0084, $0084, $0084, $0084, $0084, $0084, $0084, $0084, $0010, $0010,
+                                $0010, $0010, $0010, $0010, $0010, $0181, $0181, $0181, $0181, $0181,
+                                $0181, $0101, $0101, $0101, $0101, $0101, $0101, $0101, $0101, $0101,
+                                $0101, $0101, $0101, $0101, $0101, $0101, $0101, $0101, $0101, $0101,
+                                $0101, $0010, $0010, $0010, $0010, $0010, $0010, $0182, $0182, $0182,
+                                $0182, $0182, $0182, $0102, $0102, $0102, $0102, $0102, $0102, $0102,
+                                $0102, $0102, $0102, $0102, $0102, $0102, $0102, $0102, $0102, $0102,
+                                $0102, $0102, $0102, $0010, $0010, $0010, $0010, $0020, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000, $0000,
+                                $0000, $0000, $0000, $0000, $0000, $0000);
+
+
+function GenerateSerialNumber():string;
+const
+  StrMap:string='ABC2DE34FGHJKLM5NPQRST6U7VWX8YZ9';
 var
   i,v1,v2,v3,v4,v5,v6,v7,v8,v9:Integer;
   SumValue:string;
@@ -189,9 +89,9 @@ begin
   SumValue:=Format('%d',[v1 + v2 + v3 + v4 + v5 + v6 + v7 + v8]);
   v9:=0;
 
-  for i := 0 to SumValue.Length-1 do
+  for i := 0 to Length(SumValue)-1 do
   begin
-    v9:=v9 xor ByteMap[Ord(SumValue.Chars[i])];
+    v9:=v9 xor ByteMap[Ord(SumValue[i+1])];
   end;
   ByteArray[0] := ((v8 shr 1) and 8) or ((v8 shr 5) and 4) or (2 * v5 and 2);
   ByteArray[1] := ((v7 shr 1) and 16) or ((v7 shr 4) and 8) or ((v6 shr 5) and 2) or ((v6 shr 8) and 1);
@@ -218,7 +118,7 @@ begin
   for i := 0 to Length(ByteArray)-1 do
   begin
     if (i=4) or (i=10) or (i=16) then  Result:=Result+'-';
-    Result:=Result+StrMap.Chars[ByteArray[i]];
+    Result:=Result+StrMap[ByteArray[i]+1];
   end;
 
 end;
@@ -247,19 +147,19 @@ function GetRegistrationCode():string;
     if (GetComputerName(@ComputerName[0],nSize)=False) then
       Key:='localhost'
     else
-      Key:=String(ComputerName);
+      Key:=string(ComputerName);
 
     Key:=UpperCase(Key);
-    for i := 0 to Key.Length-1 do
+    for i := 0 to Length(Key)-1 do
     begin
-      for j := 0 to KeyMap.Length-1 do
+      for j := 0 to Length(KeyMap)-1 do
       begin
-        if (Key.Chars[i]=KeyMap.Chars[j]) then  Break;
+        if (Key[i+1]=KeyMap[j+1]) then  Break;
       end;
-      if j>=KeyMap.Length then
+      if j>=Length(KeyMap) then
         Result:=Result+16*88
       else
-        Result:=Result+16*Ord(KeyMap.Chars[35-j]);
+        Result:=Result+16*Ord(KeyMap[36-j]);
     end;
   end;  
 var
@@ -347,7 +247,7 @@ begin
   skuid:=IntToStr(HostSKU);
 
   Result:='11'#10;
-  Result:=Result+'e.pkg'#10'RAD Studio 10 Seattle Architect'#10;
+  Result:=Result+'e.pkg'#10'RAD Studio 10.1 Berlin Architect\n'#10;
   Result:=Result+'e.pt'#10'10'#10;
   Result:=Result+'e.sign'#10'0'#10;
   Result:=Result+'e.sign2'#10'0'#10;
@@ -374,20 +274,20 @@ begin
   Result:=Result+'platform'#10'1'#10;
   Result:=Result+'platform_label'#10'Windows'#10;
   Result:=Result+'product'#10'2000'#10;
-  Result:=Result+'productid'#10'2023'#10;
-  Result:=Result+'productid_label'#10'Delphi 10 Seattle'#10;        //Delphi 10 Seattle
+  Result:=Result+'productid'#10'2024'#10;
+  Result:=Result+'productid_label'#10'Delphi 10.1 Berlin'#10;        
   Result:=Result+'productsku'#10+skuid+#10;
-  Result:=Result+'productsku_label'#10'Architect'#10;               //Architect
+  Result:=Result+'productsku_label'#10'Architect'#10;               
   Result:=Result+'rndkey'#10'13371337'#10;
   Result:=Result+'serialno'#10+SerialNumber+#10;
   Result:=Result+'sku'#10+skuid+#10;
   Result:=Result+'templicense'#10'0'#10;
   Result:=Result+'termtype'#10'0'#10;
   Result:=Result+'termtype_label'#10'Permanent'#10;
-  Result:=Result+'title'#10'Delphi 10 Seattle Architect'#10;      //Delphi 10 Seattle Architect
+  Result:=Result+'title'#10'Delphi 10.1 Berlin Architect'#10;
   Result:=Result+'trial'#10'0'#10;
   Result:=Result+'upgrade'#10'0'#10;
-  Result:=Result+'version'#10'23'#10;
+  Result:=Result+'version'#10'24'#10;
   Result:=Result+'27'#10;
   Result:=Result+'Android'#10'T'#10;
   Result:=Result+'DESIGNDIAGRAMS'#10'TRUE'#10;
@@ -430,8 +330,8 @@ begin
   Result:=Result+'platform'#10'1'#10;
   Result:=Result+'platform_label'#10'Windows'#10;
   Result:=Result+'product'#10'4000'#10;
-  Result:=Result+'productid'#10'4020'#10;
-  Result:=Result+'productid_label'#10'C++Builder 10 Seattle'#10;        //C++Builder 10 Seattle
+  Result:=Result+'productid'#10'4021'#10;
+  Result:=Result+'productid_label'#10'C++Builder 10.1 Berlin'#10;       
   Result:=Result+'productsku'#10+skuid+#10;
   Result:=Result+'productsku_label'#10'Architect'#10;               //Architect
   Result:=Result+'rndkey'#10'13371337'#10;
@@ -440,10 +340,10 @@ begin
   Result:=Result+'templicense'#10'0'#10;
   Result:=Result+'termtype'#10'0'#10;
   Result:=Result+'termtype_label'#10'Permanent'#10;
-  Result:=Result+'title'#10'C++Builder 10 Seattle Architect'#10;      //C++Builder 10 Seattle Architect
+  Result:=Result+'title'#10'C++Builder 10.1 Berlin Architect'#10;
   Result:=Result+'trial'#10'0'#10;
   Result:=Result+'upgrade'#10'0'#10;
-  Result:=Result+'version'#10'16'#10;
+  Result:=Result+'version'#10'17'#10;
   Result:=Result+'26'#10;
   Result:=Result+'Android'#10'T'#10;
   Result:=Result+'DESIGNDIAGRAMS'#10'TRUE'#10;
@@ -617,8 +517,8 @@ begin
   Result:=Result+'platform'#10'1'#10;
   Result:=Result+'platform_label'#10'Windows'#10;
   Result:=Result+'product'#10'14100'#10;
-  Result:=Result+'productid'#10'14107'#10;
-  Result:=Result+'productid_label'#10'ER/Studio 9.7'#10;      //ER/Studio 9.7
+  Result:=Result+'productid'#10'14110'#10;
+  Result:=Result+'productid_label'#10'ER/Studio 2016'#10;      
   Result:=Result+'productsku'#10'15'#10;
   Result:=Result+'productsku_label'#10'Developer MultiPlatform'#10; //Developer MultiPlatform
   Result:=Result+'rndkey'#10'13371337'#10;
@@ -627,10 +527,10 @@ begin
   Result:=Result+'templicense'#10'0'#10;
   Result:=Result+'termtype'#10'0'#10;
   Result:=Result+'termtype_label'#10'Permanent'#10;
-  Result:=Result+'title'#10'ER/Studio Developer 9.7'#10;      //ER/Studio Developer 9.7
+  Result:=Result+'title'#10'ER/Studio Developer 2016'#10;     
   Result:=Result+'trial'#10'0'#10;
   Result:=Result+'upgrade'#10'0'#10;
-  Result:=Result+'version'#10'7'#10;
+  Result:=Result+'version'#10'10'#10;
   Result:=Result+'3'#10;
   Result:=Result+'CrossPlatform'#10'T'#10;
   Result:=Result+'baseLicense'#10'Developer'#10;
@@ -642,7 +542,7 @@ end;
 
 function GenerateActiveFile(SerialNumber,RegistrationCode:string;var FileName:string):Boolean;
 const
-  ModStr:AnsiString='8EBD9E688D7106E57BCF63D41BADCE133FEB4CDB718F48F7BF39F6A26EB60BAE'+
+  ModStr:string='8EBD9E688D7106E57BCF63D41BADCE133FEB4CDB718F48F7BF39F6A26EB60BAE'+
                 '0E930DC984FDED2537750C9DCFBB87D7AC7F3AA4D65D9E35C2D277BCB0ECDCA0'+
                 '2D7DAE739AC8BCAE86914F6E77C17A82C77438421FC315DC38F09C7E840AF41E'+
                 '663C5562222E661ED22578A234B58481F862CEABF477C89AE70F15134F83BC7E'+
@@ -650,7 +550,7 @@ const
                 '385D3C36BD29B58E237E22C0BE66D450BDFCED524481B6DCE3F83BBEC547F926'+
                 'AD23057504DEDB9723EBFD26218167AAC79485FF608F8881D9A6AF5C57BE9A2F'+
                 'B52047ABA92F806955580517F6D147BA1FD5DB3EEF1CEE4CA250D1C0FA824CD9';
-  ExpStr:AnsiString='7E8325B1791B628766F2EB82057E4895DB234C1D7B4B09DB3B8BBE433D68F075'+
+  ExpStr:string='7E8325B1791B628766F2EB82057E4895DB234C1D7B4B09DB3B8BBE433D68F075'+
                 '36C9B38096F51088D9DC4E7058BBD7AC9A60B1B383A3BA23E026F6A53112DE80'+
                 'C191115BB9268DC509D424D8BE1FA7DBDDB7EE5CFD15C57C48A349B1008B4CCE'+
                 'DCC240D31784945260E3814612FD871242FA203F5C1006A6F47FF3A807E3B4DE'+
@@ -673,9 +573,8 @@ begin
 
   Len:= Length(Slip);
   Len:=(Swap(loWord(Len)) shl 16) or Swap(HiWord(Len));
-  Tmp:=PAnsiChar(@Len)^+(PAnsiChar(@Len)+1)^+(PAnsiChar(@Len)+2)^+(PAnsiChar(@Len)+3)^+Slip;
-  Tmp:='01'+AnsiString(StringOfChar('F',66))+'00'+UpperCase(SHA1Print(SHA1String(Tmp)));
-
+  Tmp:=PChar(@Len)^+(PChar(@Len)+1)^+(PChar(@Len)+2)^+(PChar(@Len)+3)^+Slip;
+  Tmp:='01'+StringOfChar('F',66)+'00'+UpperCase(SHA1Print(SHA1String(Tmp)));
 
   ConvertHexStringToBase256String(Tmp,Tmp);
   Base256StringToFGInt(Tmp,FGInt);
@@ -695,14 +594,14 @@ begin
   FGIntDestroy(modb);
   FGIntDestroy(res);
 
-  Slip:=AnsiReplaceStr(Slip,'e.sign'#10'0'#10,'e.sign'#10'S2V5Z2VubmVkIGJ5Og=='#10);
-  Slip:=AnsiReplaceStr(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'WC1GT1JDRSAyMDE1IQ=='#10);
-  Slip:=AnsiReplaceStr(Slip,'e.sign3'#10'0'#10,'e.sign3'#10+Tmp+#10);
+  Slip:=StringReplace(Slip,'e.sign'#10'0'#10,'e.sign'#10'S2V5Z2VubmVkIGJ5Og=='#10,[rfReplaceAll]);
+  Slip:=StringReplace(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'WC1GT1JDRSAyMDE1IQ=='#10,[rfReplaceAll]);
+  Slip:=StringReplace(Slip,'e.sign3'#10'0'#10,'e.sign3'#10+Tmp+#10,[rfReplaceAll]);
 
   v2:=$E7F931C2;
   for i := 0 to Length(Slip) - 1 do
   begin
-    Slip[i+1]:=AnsiChar(Ord(Slip[i+1]) xor ((v2 shr 24) and $FF));
+    Slip[i+1]:=Chr(Ord(Slip[i+1]) xor ((v2 shr 24) and $FF));
     v5:=Ord(Slip[i+1]);
     if (v5 and $80)=$80 then v5:=v5 or $ffffff00;
     v5:= v5 xor v2;
@@ -751,12 +650,9 @@ begin
   finally
     Reg.Free;
   end;
-  if DirectoryExists(RootDir+'\Bin') and 
-      FileExists(RootDir+'\Bin\LicenseManager.exe') and 
-      FileExists(RootDir+'\Bin\bds.exe') then
+  if DirectoryExists(RootDir+'\Bin') and FileExists(RootDir+'\Bin\LicenseManager.exe') then
   begin
-    if (SHA1Print(SHA1File(RootDir+'\Bin\LicenseManager.exe'))=LicenseManagerHash) and 
-        (SHA1Print(SHA1File(RootDir+'\Bin\bds.exe'))=BdsHash) then
+    if SHA1Print(SHA1File(RootDir+'\Bin\LicenseManager.exe'))=LicenseManagerHash then
     begin
       FileName:= RootDir+'\Bin\SHFolder.dll';
       Stream:=TMemoryStream.Create;
