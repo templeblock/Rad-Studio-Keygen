@@ -645,7 +645,7 @@ begin
   Reg:=TRegistry.Create;
   try
     Reg.RootKey:=HKEY_LOCAL_MACHINE;
-    Reg.OpenKey('SOFTWARE\Embarcadero\BDS\17.0', False);
+    Reg.OpenKey('SOFTWARE\Embarcadero\BDS\18.0', False);
     RootDir:=Reg.ReadString('RootDir');
   finally
     Reg.Free;
