@@ -1,4 +1,4 @@
-program RadStudio10SeattleUpd1;
+program RadStudioKeygen;
 
 {$R 'UAC.res' 'UAC.rc'}
 
@@ -6,9 +6,9 @@ uses
   Forms,
   MainFrm in 'MainFrm.pas' {FrmMain},
   FGInt in 'FGInt.pas',
-  Sha1 in 'Sha1.pas',
   RadKeygen in 'RadKeygen.pas',
-  DllData in 'DllData.pas';
+  DllData in 'DllData.pas',
+  MD5 in 'MD5.pas';
 
 {$R *.res}
 

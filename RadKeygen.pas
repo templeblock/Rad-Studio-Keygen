@@ -7,6 +7,7 @@ uses Classes,SysUtils,Windows,Registry,SHFolder,Sha1,FGInt,DllData;
   function GetRegistrationCode():string;
   function GenerateActiveFile(SerialNumber,RegistrationCode:string;var FileName:string):Boolean;
   function PatchFile(var FileName:string):Boolean;
+  procedure PatchmOasisRuntime();
 
 implementation
 
@@ -594,7 +595,7 @@ begin
   FGIntDestroy(exp);
   FGIntDestroy(modb);
   FGIntDestroy(res);
-  //tks cjack
+
   Slip:=StringReplace(Slip,'e.sign'#10'0'#10,'e.sign'#10'CgeEeu66fCgQJBaqKQwwyiqyHYb22nc2VZRmQVasSDnZAtB/QTLt0CYdgdN16XCz/Nt032fMwTsytchG0l2UeA=='#10,[rfReplaceAll]);
   Slip:=StringReplace(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'JWKzOwTKBL+zOP5wrouG5ta/mH+Fvsgb7hb8oJTzu4r3gK/6sh95zKAWKiydqsgvV9pxPXTAlkxv9wAecqJKTQ=='#10,[rfReplaceAll]);
   Slip:=StringReplace(Slip,'e.sign3'#10'0'#10,'e.sign3'#10+Tmp+#10,[rfReplaceAll]);
@@ -640,9 +641,10 @@ begin
           Random(10),Random(10),Random(10),Random(10),Random(10),Random(10)]);
       end
       else
-        FileName:=ExtractFilePath(ParamStr(0))+'\RAD Studio Activation.slip';
+        FileName:=ExtractFileDir(ParamStr(0))+'\RAD Studio Activation.slip';
     end;
     Stream.SaveToFile(FileName);
+    PatchmOasisRuntime();
     Result:=True;
   finally
     Stream.Free;
@@ -682,6 +684,25 @@ begin
     end;
   end;
 end;
-
+procedure PatchmOasisRuntime();
+var
+  Stream:TMemoryStream;
+  FileName:string;
+  P:PByte;
+begin
+  FileName:=Format('%s\{655CBACE-A23C-42B8-B924-A88E80F352B5}\OFFLINE\mOasisDesigntime.dll\mOasisRuntime.dll',[AppDataPath]);
+  if FileExists(FileName) then
+  begin
+    Stream:=TMemoryStream.Create;
+    try
+      Stream.LoadFromFile(FileName);
+      P:= PByte(Integer(Stream.Memory)+$00162CBD);
+      P^:=$EB;
+      Stream.SaveToFile(FileName);
+    finally
+      Stream.Free;
+    end;
+  end;
+end;
 
 end.
