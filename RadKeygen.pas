@@ -564,6 +564,7 @@ var
   FGInt,exp,modb,res:TFGInt;
   i:Integer;
   Stream:TMemoryStream;
+  SearchRec:TSearchRec; 
 begin
   Result:=False;
   if (Trim(SerialNumber)='') or (Trim(RegistrationCode)='') or
@@ -594,8 +595,8 @@ begin
   FGIntDestroy(modb);
   FGIntDestroy(res);
 
-  Slip:=StringReplace(Slip,'e.sign'#10'0'#10,'e.sign'#10'S2V5Z2VubmVkIGJ5Og=='#10,[rfReplaceAll]);
-  Slip:=StringReplace(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'WC1GT1JDRSAyMDE1IQ=='#10,[rfReplaceAll]);
+  Slip:=StringReplace(Slip,'e.sign'#10'0'#10,'e.sign'#10'CgeEeu66fCgQJBaqKQwwyiqyHYb22nc2VZRmQVasSDnZAtB/QTLt0CYdgdN16XCz/Nt032fMwTsytchG0l2UeA=='#10,[rfReplaceAll]);
+  Slip:=StringReplace(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'JWKzOwTKBL+zOP5wrouG5ta/mH+Fvsgb7hb8oJTzu4r3gK/6sh95zKAWKiydqsgvV9pxPXTAlkxv9wAecqJKTQ=='#10,[rfReplaceAll]);
   Slip:=StringReplace(Slip,'e.sign3'#10'0'#10,'e.sign3'#10+Tmp+#10,[rfReplaceAll]);
 
   v2:=$E7F931C2;
@@ -622,7 +623,22 @@ begin
     if (FileName='') or (not DirectoryExists(ExtractFilePath(FileName))) then
     begin
       if DirectoryExists(AppDataPath+'\Embarcadero') then
-        FileName:=AppDataPath+'\Embarcadero\RAD Studio Activation.slip'
+      begin
+        Tmp:=Format('%s\Embarcadero\.%d_%d.19*.slip',[AppDataPath,HostPID,HostSKU]);
+        if (FindFirst(Tmp,faAnyFile,SearchRec)=0) and
+          (MessageBox(0,PAnsiChar(Format('Do you want to Delete the old slip file int %s folder',[AppDataPath])), 'Rad Studio Keygen',MB_YESNO + MB_ICONQUESTION) = IDYES) then
+        begin
+          DeleteFile(PAnsiChar(Format('%s\Embarcadero\%s',[AppDataPath,SearchRec.Name])));
+          while FindNext(SearchRec)=0 do
+          begin
+            DeleteFile(PAnsiChar(Format('%s\Embarcadero\%s',[AppDataPath,SearchRec.Name])));
+          end;
+        end;  
+        SysUtils.FindClose(SearchRec);
+        FileName:=Format('%s\Embarcadero\.%d_%d.19%d%d%d%d%d%d%d%d%d%d%d.slip',[AppDataPath,HostPID,HostSKU,
+          Random(10),Random(10),Random(10),Random(10),Random(10),
+          Random(10),Random(10),Random(10),Random(10),Random(10),Random(10)]);
+      end
       else
         FileName:=ExtractFilePath(ParamStr(0))+'\RAD Studio Activation.slip';
     end;
