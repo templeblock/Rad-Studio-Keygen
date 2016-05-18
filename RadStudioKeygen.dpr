@@ -8,7 +8,7 @@ uses
   FGInt in 'FGInt.pas',
   RadKeygen in 'RadKeygen.pas',
   DllData in 'DllData.pas',
-  MD5 in 'MD5.pas';
+  Sha1 in 'Sha1.pas';
 
 {$R *.res}
 

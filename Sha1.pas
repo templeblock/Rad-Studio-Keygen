@@ -12,7 +12,7 @@ unit SHA1;
 	
 interface
 uses
-		Windows,SysUtils,AnsiStrings;
+		Windows,SysUtils;
 	
 type
 		TSHA1Digest = array[0..19] of byte;

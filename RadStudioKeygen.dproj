@@ -45,8 +45,8 @@
     <DCCReference Include="MainFrm.pas">
       <Form>FrmMain</Form>
     </DCCReference>
-    <DCCReference Include="MD5.pas" />
     <DCCReference Include="RadKeygen.pas" />
+    <DCCReference Include="Sha1.pas" />
   </ItemGroup>
 </Project>
 <!-- EurekaLog First Line

@@ -3,7 +3,7 @@ unit MainFrm;
 interface
 
 uses
-  Windows,SysUtils,Controls,Forms,Dialogs,StdCtrls,Classes,RadKeygen,AnsiStrings;
+  Windows,SysUtils,Controls,Forms,Dialogs,StdCtrls,Classes,RadKeygen;
 type
   TFrmMain = class(TForm)
     Button1: TButton;

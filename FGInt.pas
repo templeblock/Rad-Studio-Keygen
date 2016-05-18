@@ -28,7 +28,7 @@ Unit FGInt;
 
 Interface
 
-Uses Windows, SysUtils, Controls, Math,AnsiStrings;
+Uses Windows, SysUtils, Controls, Math,StrUtils;
 
 Type
    TCompare = (Lt, St, Eq, Er);
