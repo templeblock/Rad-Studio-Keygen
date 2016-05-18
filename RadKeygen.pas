@@ -1,11 +1,3 @@
-(*
-2016/05/18
-bug:
-FileName:=ExtractFilePath(ParamStr(0))+'\RAD Studio Activation.slip';
-...\\RAD Studio Activation.slip
-fixed:
-FileName:=ExtractFileDir(ParamStr(0))+'\RAD Studio Activation.slip';
-*)
 unit RadKeygen;
 
 interface
