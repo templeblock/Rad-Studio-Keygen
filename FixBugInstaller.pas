@@ -24,7 +24,7 @@ begin
           //0409 - English language
           0: if strtoint(reg.ReadString('InstallLanguage'))=0419
                then reg.WriteString('InstallLanguage','0409');
-          1: reg.WriteString('InstallLanguage',strtoint(reg.ReadString('Default')));
+          1: reg.WriteString('InstallLanguage',reg.ReadString('Default'));
         end;
     end;
   finally
