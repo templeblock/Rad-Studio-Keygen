@@ -594,7 +594,7 @@ begin
   FGIntDestroy(exp);
   FGIntDestroy(modb);
   FGIntDestroy(res);
-
+  //tks cjack
   Slip:=StringReplace(Slip,'e.sign'#10'0'#10,'e.sign'#10'CgeEeu66fCgQJBaqKQwwyiqyHYb22nc2VZRmQVasSDnZAtB/QTLt0CYdgdN16XCz/Nt032fMwTsytchG0l2UeA=='#10,[rfReplaceAll]);
   Slip:=StringReplace(Slip,'e.sign2'#10'0'#10,'e.sign2'#10'JWKzOwTKBL+zOP5wrouG5ta/mH+Fvsgb7hb8oJTzu4r3gK/6sh95zKAWKiydqsgvV9pxPXTAlkxv9wAecqJKTQ=='#10,[rfReplaceAll]);
   Slip:=StringReplace(Slip,'e.sign3'#10'0'#10,'e.sign3'#10+Tmp+#10,[rfReplaceAll]);
