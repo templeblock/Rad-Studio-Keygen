@@ -1,3 +1,11 @@
+(*
+2016/05/18
+bug:
+FileName:=ExtractFilePath(ParamStr(0))+'\RAD Studio Activation.slip';
+...\\RAD Studio Activation.slip
+fixed:
+FileName:=ExtractFileDir(ParamStr(0))+'\RAD Studio Activation.slip';
+*)
 unit RadKeygen;
 
 interface
@@ -640,7 +648,7 @@ begin
           Random(10),Random(10),Random(10),Random(10),Random(10),Random(10)]);
       end
       else
-        FileName:=ExtractFilePath(ParamStr(0))+'\RAD Studio Activation.slip';
+        FileName:=ExtractFileDir(ParamStr(0))+'\RAD Studio Activation.slip';
     end;
     Stream.SaveToFile(FileName);
     Result:=True;
