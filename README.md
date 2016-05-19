@@ -12,7 +12,9 @@
 * Click "< Back" button,Now use keygen Generate license file.
 * Click "Generate" to get new Serial Number. 
     * !!! Do not use any other serial numbers from internet !!! 
-* now click "Next >" in the Setup page and continue installation process...  
+* now click "Next >" in the Setup page and continue installation process..
+* When Installation has finished, click "Patch". 
+* Start RAD Studio. .  
 
 
 ######compiled by delphi 2007
