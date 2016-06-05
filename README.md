@@ -17,7 +17,8 @@
 * Start RAD Studio. .  
 
 
-######compiled by delphi 2007
+######compiled by delphi 10.1
+ colt9mm
 
 ```
     GenerateSerialNumber from unis keymaker
