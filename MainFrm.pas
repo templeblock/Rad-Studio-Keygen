@@ -14,6 +14,7 @@ uses
     Label2: TLabel;
     Edit2: TEdit;
     Button2: TButton;
+    mmo1: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -41,12 +42,12 @@ begin
   begin
     if RadKeygen.GenerateActiveFile(Edit1.Text,Edit2.Text,FileName) then
     begin
-      MessageBox(Handle,PChar('Slip files have been saved successfully!'#10+FileName),PChar(Application.Title),MB_OK+MB_ICONINFORMATION);
+      MessageBox(Handle,PChar('Arquivo Slip salvo corretamente!'#10+FileName),PChar(Application.Title),MB_OK+MB_ICONINFORMATION);
     end
     else
     begin
-      MessageBox(Handle,PChar('An error has occured while save the slip file!'),PChar(Application.Title),MB_OK+MB_ICONWARNING);
-    end;  
+      MessageBox(Handle,PChar('Ocorreu um erro na gravação do arquivo Slip!'),PChar(Application.Title),MB_OK+MB_ICONWARNING);
+    end;
   end;
 end;
 
@@ -56,11 +57,11 @@ var
 begin
   if RadKeygen.PatchFile(FileName) then
   begin
-    MessageBox(Handle,PChar('path files have been saved successfully!'#10+FileName),PChar(Application.Title),MB_OK+MB_ICONINFORMATION);
+    MessageBox(Handle,PChar('arquivo path salvo corretamente!'#10+FileName),PChar(Application.Title),MB_OK+MB_ICONINFORMATION);
   end
   else
   begin
-    MessageBox(Handle,PChar('An error has occured while patch file!'),PChar(Application.Title),MB_OK+MB_ICONWARNING);
+    MessageBox(Handle,PChar('Ocorreu um erro na tentativa de fazer o path no arquivo!'),PChar(Application.Title),MB_OK+MB_ICONWARNING);
   end;
 end;
 

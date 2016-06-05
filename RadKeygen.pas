@@ -603,7 +603,7 @@ begin
   v2:=$E7F931C2;
   for i := 0 to Length(Slip) - 1 do
   begin
-    Slip[i+1]:=Chr(Ord(Slip[i+1]) xor ((v2 shr 24) and $FF));
+    Slip[i+1]:=ansiChar(Ord(Slip[i+1]) xor ((v2 shr 24) and $FF));
     v5:=Ord(Slip[i+1]);
     if (v5 and $80)=$80 then v5:=v5 or $ffffff00;
     v5:= v5 xor v2;
@@ -627,12 +627,12 @@ begin
       begin
         Tmp:=Format('%s\Embarcadero\.%d_%d.19*.slip',[AppDataPath,HostPID,HostSKU]);
         if (FindFirst(Tmp,faAnyFile,SearchRec)=0) and
-          (MessageBox(0,PAnsiChar(Format('Do you want to Delete the old slip file int %s folder',[AppDataPath])), 'Rad Studio Keygen',MB_YESNO + MB_ICONQUESTION) = IDYES) then
+          (MessageBox(0,PWideChar(Format('Você deseja deletar o aruqivo Slip antigo da pasta %s ',[AppDataPath])), 'Rad Studio Keygen',MB_YESNO + MB_ICONQUESTION) = IDYES) then
         begin
-          DeleteFile(PAnsiChar(Format('%s\Embarcadero\%s',[AppDataPath,SearchRec.Name])));
+          DeleteFile(PwideChar(Format('%s\Embarcadero\%s',[AppDataPath,SearchRec.Name])));
           while FindNext(SearchRec)=0 do
           begin
-            DeleteFile(PAnsiChar(Format('%s\Embarcadero\%s',[AppDataPath,SearchRec.Name])));
+            DeleteFile(PwideChar(Format('%s\Embarcadero\%s',[AppDataPath,SearchRec.Name])));
           end;
         end;  
         SysUtils.FindClose(SearchRec);
